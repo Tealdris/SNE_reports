@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        SSN Lab 5 Assignment: TLS - HackMD
+    </title>
+    <link rel="icon" type="image/png" href="https://hackmd.io/favicon.png">
+    <link rel="apple-touch-icon" href="https://hackmd.io/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css" integrity="sha256-QiWfLIsCT02Sdwkogf6YMiQlj4NE84MKkzEMkZnMGdg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hackmd/emojify.js@2.1.0/dist/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i|Source+Code+Pro:300,400,500|Source+Sans+Pro:300,300i,400,400i,600,600i|Source+Serif+Pro&subset=latin-ext);.hljs{display:block;background:#fff;padding:.5em;color:#333;overflow-x:auto}.hljs-comment,.hljs-meta{color:#969896}.hljs-emphasis,.hljs-quote,.hljs-string,.hljs-strong,.hljs-template-variable,.hljs-variable{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}.hljs-attribute,.hljs-bullet,.hljs-literal,.hljs-number,.hljs-symbol{color:#0086b3}.hljs-built_in,.hljs-builtin-name{color:#005cc5}.hljs-name,.hljs-section{color:#63a35c}.hljs-tag{color:#333}.hljs-attr,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id,.hljs-selector-pseudo,.hljs-title{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}.markdown-body{font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{font-size:16px;padding:0 1em;color:#777;border-left:.25em solid #ddd}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body kbd,.popover kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid #ccc;border-bottom-color:#bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.markdown-body h1 .octicon-link,.markdown-body h2 .octicon-link,.markdown-body h3 .octicon-link,.markdown-body h4 .octicon-link,.markdown-body h5 .octicon-link,.markdown-body h6 .octicon-link{color:#000;vertical-align:middle;visibility:hidden}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .octicon-link,.markdown-body h2:hover .anchor .octicon-link,.markdown-body h3:hover .anchor .octicon-link,.markdown-body h4:hover .anchor .octicon-link,.markdown-body h5:hover .anchor .octicon-link,.markdown-body h6:hover .anchor .octicon-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{padding-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:0;padding-top:.2em;padding-bottom:.2em;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\00a0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0 none}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important;position:relative}.markdown-body .emoji{vertical-align:top}.markdown-body pre{border:inherit!important}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.markdown-body code[data-gist-id]{background:none;padding:0}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p:last-child{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit;overflow:visible}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p:last-child,.markdown-body .alert>ul:last-child{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body .mark,.markdown-body mark{background-color:#fff1a7}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.figma{display:table;position:relative;width:100%;padding-bottom:56.25%}.figma iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%;border:1px solid #eee}.markmap-container{height:300px}.markmap-container>svg{width:100%;height:100%}.MJX_Assistive_MathML{display:none}#MathJax_Message{z-index:1000!important}.ui-infobar{position:relative;z-index:2;max-width:760px;margin:25px auto -25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:998}.ui-toc.both-mode{margin-left:8px}.ui-toc.both-mode .ui-toc-label{height:40px;padding:10px 4px;border-top-left-radius:0;border-bottom-left-radius:0}.ui-toc-label{background-color:#e6e6e6;border:none;color:#868686;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff;transition:opacity .2s}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;transition:opacity .2s}.ui-toc-dropdown{margin-top:20px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif}html[lang^=ja] .markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html[lang=zh-tw] .markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html[lang=zh-cn] .markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}html .markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html .markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html .markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}html[lang^=ja] .ui-toc-dropdown{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,ＭＳ\ Ｐゴシック,sans-serif}html[lang=zh-tw] .ui-toc-dropdown{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,微軟正黑UI,sans-serif}html[lang=zh-cn] .ui-toc-dropdown{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,微软雅黑UI,sans-serif}html .ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,ＭＳ\ Ｐゴシック,sans-serif}html .ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,微軟正黑UI,sans-serif}html .ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,微软雅黑UI,sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:50%;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:cover}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}.ui-infobar>small>span{line-height:22px}.ui-infobar>small .dropdown{display:inline-block}.ui-infobar>small .dropdown a:focus,.ui-infobar>small .dropdown a:hover{text-decoration:none}.ui-more-info{color:#888;cursor:pointer;vertical-align:middle}.ui-more-info .fa{font-size:16px}.ui-connectedGithub,.ui-published-note{color:#888}.ui-connectedGithub{line-height:23px;white-space:nowrap}.ui-connectedGithub a.file-path{color:#888;text-decoration:none;padding-left:22px}.ui-connectedGithub a.file-path:active,.ui-connectedGithub a.file-path:hover{color:#888;text-decoration:underline}.ui-connectedGithub .fa{font-size:20px}.ui-published-note .fa{font-size:20px;vertical-align:top}.unselectable{-webkit-user-select:none;-o-user-select:none;user-select:none}.selectable{-webkit-user-select:text;-o-user-select:text;user-select:text}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}.site-ui-font{font-family:Source Sans Pro,Helvetica,Arial,sans-serif}html[lang^=ja] .site-ui-font{font-family:Source Sans Pro,Helvetica,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html[lang=zh-tw] .site-ui-font{font-family:Source Sans Pro,Helvetica,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html[lang=zh-cn] .site-ui-font{font-family:Source Sans Pro,Helvetica,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;letter-spacing:.025em;font-family:Source Sans Pro,Helvetica,Arial,sans-serif}html[lang^=ja] body{font-family:Source Sans Pro,Helvetica,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html[lang=zh-tw] body{font-family:Source Sans Pro,Helvetica,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html[lang=zh-cn] body{font-family:Source Sans Pro,Helvetica,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}abbr[title]{border-bottom:none;text-decoration:underline;-webkit-text-decoration:underline dotted;text-decoration:underline dotted}abbr[data-original-title],abbr[title]{cursor:help}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid comment-enabled" data-hard-breaks="true"><h6 id="tags-SSN" data-id="tags-SSN"><a class="anchor hidden-xs" href="#tags-SSN" title="tags-SSN"><span class="octicon octicon-link"></span></a><span>tags: </span><code>SSN</code></h6><div class="alert alert-success">
+<h1 id="SSN-Lab-5-Assignment-TLS" data-id="SSN-Lab-5-Assignment-TLS"><a class="anchor hidden-xs" href="#SSN-Lab-5-Assignment-TLS" title="SSN-Lab-5-Assignment-TLS"><span class="octicon octicon-link"></span></a><span>SSN Lab 5 Assignment: TLS</span></h1>
+<p><strong><span>Name: Radomskiy Ilia</span></strong></p>
+</div><h2 id="Task-1-TLS-handshake" data-id="Task-1-TLS-handshake"><a class="anchor hidden-xs" href="#Task-1-TLS-handshake" title="Task-1-TLS-handshake"><span class="octicon octicon-link"></span></a><span>Task 1: TLS handshake</span></h2><div class="alert alert-info">
+<ol>
+<li><span>Using OpenSSL, establish a TLS connection to </span><a href="http://facebook.com" target="_blank" rel="noopener"><span>facebook.com</span></a><span>. Look at the parameters of your connection and briefly describe them in your report.</span></li>
+</ol>
+</div><p><span>TLS connection can be established with the command listed below</span></p><pre><code>openssl s_client -connect facebook.com:443
+</code></pre><p><span>The output of this command can be seen in the two pictures below. It is divided into two pictures because it is big, and cant fit one screen.</span></p><center>
+<p><img src="https://i.imgur.com/l9oQU0V.png" alt="" loading="lazy"></p>
+<p><img src="https://i.imgur.com/6EMAc1j.png" alt="" loading="lazy"></p>
+</center><p><span>Output can be divided into logical sections, which are listed below</span></p><p><span>1: verifications of certificate</span><br>
+<span>2: Chain of certificates</span><br>
+<span>3: Certificate itself</span><br>
+<span>4: connections parameters</span><br>
+<span>5: SSL-Session</span></p><p><span>parameters of connection shown below:</span></p><pre><code>Cryptographic Hashing Algorithm: SHA-256
+Signature type: ECDSA (Elliptic Curve Digital Signature Algorithm)
+Server key: X25519
+Amount of bits in during connection
+A version of TLS connection: TLSv1.3
+Chipper: TLS_CHACHACryptographic Hashing Algorithm_POLY1305_SHA256
+</code></pre><div class="alert alert-info">
+<ol start="2">
+<li><span>Establish the connection again and intercept the TLS handshake using tcpdump/Wireshark. Describe all packets involved in the TLS connection in your report.</span></li>
+</ol>
+</div><p><span>Using Wireshark I can intercept the TLS connection, whole TLS handshake process is shown in the picture below.</span></p><center>
+<p><img src="https://i.imgur.com/Iz2vD4g.png" alt="" loading="lazy"></p>
+</center><p><span>At the Wireshark  window we can see:</span></p><pre><code>Client Hello
+Server Hello
+Http-over-tls
+Http-over-tls
+Change cipher spec protocol
+Http-over-tls
+... (next one is Http-over-tls or Change cipher spec protocol packets)
+</code></pre><p><span>If we take a look on the TLS process on wikipedia, we can find that it looks like this:</span></p><p><strong><span>ClientHello</span></strong><span> - tls version, random number, number of chiphers in TLS</span><br>
+<strong><span>ServerHello</span></strong><span> - tls version, random number, number of chiphers in TLS (client’s)</span><br>
+<strong><span>Certificate</span></strong><span> - server’s certificate</span><br>
+<strong><span>ServerKeyExchange</span></strong><span> - Deffi-Helman</span><br>
+<strong><span>ServerHelloDone</span></strong><span> - finish of 1 round</span><br>
+<strong><span>ClientKeyExchange</span></strong><span> - Deffi-Helman, client side</span><br>
+<strong><span>PreMasterSecret</span></strong><span> - message exchanging with common secret</span><br>
+<strong><span>ChangeCipherSpec</span></strong><span> - connection information provided by client</span><br>
+<strong><span>Finished</span></strong><span> - end of communication</span><br>
+<strong><span>ChangeCipherSpec</span></strong><span> - connection information provided by server</span></p><p><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security" target="_blank" rel="noopener"><span>TLS wiki</span></a></p><div class="alert alert-info">
+<ol start="3">
+<li><span>What version of TLS is used? Describe which versions are not safe to use and under which conditions.</span></li>
+</ol>
+</div><p><span>In the pictures, as you can see, TLS 1.2 and 1.3 is used.</span><br>
+<span>But such versions as 1.0, 1,1 is considered outdated because:</span><br>
+<span>TLS 1.0, 1.1 is SHA-1 based, and this cipher method is considered breakable</span><br>
+<span>Signatures used in TLS 1.0, 1.1 is using MD5 and SHA-1 hashes</span></p><p><a href="https://datatracker.ietf.org/doc/rfc8996/" target="_blank" rel="noopener"><span>rfc8996</span></a></p><div class="alert alert-info">
+<ol start="4">
+<li><span>What cipher suite is used? Make a small list of cipher suites that you would recommend using and why.</span></li>
+</ol>
+</div><p><span>As you may see in the picture below, at the first stage users sends to server list of supported ciphers</span></p><center>
+<p><img src="https://i.imgur.com/k6hTrtr.png" alt="" loading="lazy"></p>
+</center><p><span>Then the server responds to this message with cipher chosen by the server, in our case:</span></p><pre><code>TLS_CHACHA20_POLY1305_SHA256
+</code></pre><center>
+<p><img src="https://i.imgur.com/yyvFWvM.png" alt="" loading="lazy"></p>
+</center><p><span>TLS protocol have documented </span><a href="https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4" target="_blank" rel="noopener"><span>ciphersuite</span></a><span> recomdation</span></p><p><span>Some of them listed below:</span><br>
+<span>AES_128_GCM_SHA256</span><br>
+<span>AES_256_GCM_SHA384</span><br>
+<span>CHACHA20_POLY1305_SHA256</span><br>
+<span>AES_128_CCM_SHA256</span><br>
+<span>AES_128_CCM</span><br>
+<span>AES_256_CCM</span><br>
+<span>…</span></p><p><span>As we were convinced in the previous lab, (brute-forcing AES 256), AES_256_GCM_SHA384 will be my choice, but in the end, i would trust to the developer of the protocol</span></p><h2 id="Task-2-Man-In-The-Middle" data-id="Task-2-Man-In-The-Middle"><a class="anchor hidden-xs" href="#Task-2-Man-In-The-Middle" title="Task-2-Man-In-The-Middle"><span class="octicon octicon-link"></span></a><span>Task 2: Man In The Middle</span></h2><div class="alert alert-info">
+<ol>
+<li><span>Setup a TLS proxy - mitmproxy</span></li>
+</ol>
+</div><p><strong><span>a. There are several modes it can operate. You should use transparent mode.</span></strong></p><p><span>There are two methods of running mitmproxy: explicit proxy - ready to work from the box and </span><a href="https://docs.mitmproxy.org/stable/howto-transparent/" target="_blank" rel="noopener"><span>transparent proxy</span></a><span>, that needs to be configured. the second option is one when used doesn’t know about proxy existing</span></p><p><strong><span>b. Describe setup steps and show that are able to read transmitted data.</span></strong></p><p><span>Mitmproxy can be easily installed via </span><code>apt install</code><span>  but running in transparent mode requires some additional configuration</span></p><p><span>the explicit mode can be executed from the box, one thing that our browser or machine has to use </span><code>mitmproxy</code><span> as a proxy</span></p><center>
+<p><img src="https://i.imgur.com/kxKqUjJ.png" alt="" loading="lazy"></p>
+</center><p><span>One thing, the browser can define that we are using proxy</span></p><center>
+<p><img src="https://i.imgur.com/JGDiCAc.png" alt="" loading="lazy"></p>
+</center><p><span>That is why we are configuring transparent mode:</span></p><center>
+<p><img src="https://i.imgur.com/ceJb43w.png" alt="" loading="lazy"><br>
+<span>Sending request from machine</span><br>
+<img src="https://i.imgur.com/BClXed1.png" alt="" loading="lazy"><br>
+<span>Our proxy have recieved it</span><br>
+<img src="https://i.imgur.com/3vhthsD.png" alt="" loading="lazy"><br>
+<span>Possible modification ways</span></p>
+</center><p><span>To enable transparent proxy, I performed commands listed below:</span></p><p><span>First - enabling forwarding</span></p><pre><code>sudo sysctl -w net.ipv4.ip_forward=1
+sudo sysctl -w net.ipv4.conf.all.send_redirects=0
+</code></pre><p><span>Second, reroute all traffick from virbr0 (VM) to mitmproxy</span></p><pre><code>sudo iptables -t nat -A PREROUTING -i virbr0 -p tcp --dport 80 -j REDIRECT --to-port 8080
+sudo iptables -t nat -A PREROUTING -i virbr0 -p tcp --dport 443 -j REDIRECT --to-port 8080
+</code></pre><p><span>These lines can be used if you want to check are settings enabled or not.</span><br>
+<span>If something went wrong you can use the second line to delete the rule</span></p><pre><code>sudo iptables -t nat -v -L PREROUTING -n --line-number
+sudo iptables -t nat -D PREROUTING (number)
+</code></pre><p><span>Users can install mitmproxy’s certificate if he trusts the vendor</span></p><pre><code>sudo mkdir /usr/share/ca-certificates/extra
+download certificate from original website
+openssl x509 -outform der -in mitmproxy.pem -out mitmproxy.crt
+sudo cp mitmproxy.crt /usr/share/ca-certificates/extra/mitmporxy.crt
+</code></pre><div class="alert alert-info">
+<ol start="2">
+<li><span>Intercept TLS handshake before proxy and after proxy and describe how MITM is performed.</span></li>
+</ol>
+</div><p><span>In order to capture traffic before and after proxy topology in gns3 was created.</span><br>
+<span>You can see this topology in the picture below</span></p><center>
+<p><img src="https://i.imgur.com/7ip4vfn.png" alt="" loading="lazy"><br>
+<span>Toloplogy</span></p>
+</center><p><span>Then TLS connection was captured, on the picture below you can see the whole connection captured with Wireshark. On the left picture there is a pack of packets inside gns3, so from ubuntu cloud machine to nat.</span><br>
+<span>On the right picture, there is a pack of packets that were captured on the virbr0 interface, this interface is used by gns3 as a local network</span></p><center>
+<p><img src="https://i.imgur.com/YRN7QWO.png" alt="" loading="lazy"></p>
+</center><p><span>As we can see from the picture above the amount of TLS packets has changed. The amount of </span><code>TLSv1.3</code><span> headers at the bottom of the pictures are not matched enter, there are two packets more on the picture on the right</span></p><p><span>The next picture shows an unexpected TLSv1.3 packet (highlighted with a blue line in the picture on the right) coming from the server that consists of two TLS connection headers</span></p><center>
+<p><img src="https://i.imgur.com/bYaib9k.png" alt="" loading="lazy"></p>
+</center><p><span>And the last one, on the picture below you, can see packets that appear during connection to the website by performing </span><code>curl</code><span> command.</span><br>
+<span>The difference between them is that in the picture on the right there is an additional header ([SEQ/ACK analysis])</span></p><center>
+<p><img src="https://i.imgur.com/IfX4pt7.png" alt="" loading="lazy"></p>
+</center><p><strong><span>a. When do you think TLS proxy is used for security purposes in the industry?</span></strong></p><p><span>It is widely used when developers need to diagnose their infrastructure under different conditions: testing and debugging os web applications, testing poorly documented programs, or solutions, can be used as an analytical tool for suspicious applications, and, of course for the </span><code>attack team</code><span> purpose</span></p><p><strong><span>b. What are techniques that are used to protect applications (desktop, web, mobile, etc.) from TLS proxying?</span></strong></p><p><span>Most of the cases of MITM attacks can be prevented by educating people because about 80% of all breaches and steals is a human mistake</span><br>
+<span>But other techniques are:</span><br>
+<span>Hide your network (private addresses)</span><br>
+<span>VPN infrastructure</span><br>
+<span>force people to use HTTPS and TLS 1.3</span><br>
+<span>Keep Up-to-date your system, browser, and antivirus</span><br>
+<span>Separate your network</span><br>
+<span>Authorization</span><br>
+<span>Intrusion detection systems (like Imperva and others)</span><br>
+<span>Audits and monitoring on your system/enviromet/network</span></p><p><span>And most importantly, you may download the original certificate on your device, on compare  it to the web’s every  time connection is established</span></p><div class="alert alert-info">
+<ol start="3">
+<li><span>Proxy allows you not only to read data, but also modify it on the fly. Think of a scenario when it can be dangerous and try to demonstrate that.</span></li>
+</ol>
+</div><p><span>Some proxies allow to modify packets on the fly, and mitmproxy also allows to do this, an example of it is shown on the picture below.</span><br>
+<span>mitmproxy also has a web GUI that can be used, in the pictures below i am making a request from the ubuntu guest machine to </span><code>facebook</code><span>, but changing the request to </span><code>google.com</code></p><center>
+<p><img src="https://i.imgur.com/xAc0Y0J.png" alt="" loading="lazy"><br>
+<img src="https://i.imgur.com/k6kLqsl.png" alt="" loading="lazy"></p>
+</center><p><span>In my example, it is not very useful to send users to </span><code>google.com</code><span>  instead of </span><code>facebook.com</code><span>, but in real case scenarios, it is used to send users to phishing websites.</span></p><h2 id="Task-3---x509" data-id="Task-3---x509"><a class="anchor hidden-xs" href="#Task-3---x509" title="Task-3---x509"><span class="octicon octicon-link"></span></a><span>Task 3 - x509</span></h2><details>
+<p><span>By default, mitmproxy uses its own certificate authority to issue certificates and if you inspect the certificate chain (f.e in browser) you will see that it looks suspicious.</span></p>
+<p><span>Here you will try to create a certificate chain that looks almost the same as the original certificate chain for a website and, alongside, get familiar with common attributes that are</span><br>
+<span>used in x509 certificates.</span></p>
+</details><div class="alert alert-info">
+<ol>
+<li><span>Obtain a cert chain for </span><a href="http://www.facebook.com" target="_blank" rel="noopener"><span>www.facebook.com</span></a><span> (f.e. using openssl):</span></li>
+</ol>
+</div><p><span>cert chain for </span><a href="http://www.facebook.com" target="_blank" rel="noopener"><span>www.facebook.com</span></a><span> can be obtained in different ways, we can use web browser for this purpose, like it is shown in the picture below.</span><br>
+<a href="https://www.shellhacks.com/get-ssl-certificate-from-server-site-url-export-download/" target="_blank" rel="noopener"></a></p><center>
+<p><img src="https://i.imgur.com/oIlW78u.png" alt="" loading="lazy"></p>
+</center><p><span>or certificate can be downloaded by using </span><code>openssl</code></p><pre><code>echo | openssl s_client -servername facebook.com -connect facebook.com:443 |\
+  sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' &gt; certificate.crt
+</code></pre><p><span>In the pictures below you can find how does this chain of trust looks like.</span></p><center>
+<p><img src="https://i.imgur.com/ht7AQuz.png" alt="" loading="lazy"></p>
+</center><p><strong><span>a. Does the cert chain contain the root cert? Where are trusted certs stored?</span></strong></p><p><span>Yes, it is named </span><code>DigiCert High Assurance EV Root CA</code><span>.</span></p><p><span>If we are talking about place of storage on PC it is </span><code>/usr/share/ca-certificates</code><br>
+<span>Or they can be stored inside application storage folder</span></p><p><strong><span>b. Extract certs and place: root CA in root.crt , intermediate CA in int_ca.crt , and server cert in server.crt.</span></strong></p><p><span>Extracted certificates are shown in the picture below, and I will provide them in moodle</span></p><center>
+<p><img src="https://i.imgur.com/xPxJG8R.png" alt="" loading="lazy"></p>
+</center><div class="alert alert-info">
+<ol start="2">
+<li><span>Using the contents of obtained certificates, create your own chain that mimics the original one, they should look almost identical.</span></li>
+</ol>
+</div><p><strong><span>a. Document your steps and describe the meaning of certificates attributes.</span></strong></p><p><span>In order to create our own chain of certificates I need to perform following steps:</span></p><p><span>Create folders</span></p><pre><code>mkdir certs crl newcerts private
+</code></pre><p><span>Create </span><code>index</code><span> file, it contains data about signed certificates</span></p><pre><code>touch index.txt
+</code></pre><p><span>Create </span><code>serial</code><span> file, it contains amount of signed certificates</span></p><pre><code>echo 1000 &gt; serial
+</code></pre><p><span>Create configuration </span><code>openssl.cnf</code><span> file, it contains following instructions:</span></p><details>
+<p><span>[ ca ]</span></p>
+<h1 id="man-ca" data-id="man-ca"><a class="anchor hidden-xs" href="#man-ca" title="man-ca"><span class="octicon octicon-link"></span></a><code>man ca</code></h1>
+<p><span>default_ca=CA_default</span></p>
+<p><span>[ CA_default ]</span></p>
+<h1 id="Directory-and-file-locations" data-id="Directory-and-file-locations"><a class="anchor hidden-xs" href="#Directory-and-file-locations" title="Directory-and-file-locations"><span class="octicon octicon-link"></span></a><span>Directory and file locations.</span></h1>
+<p><span>dir               = /home/st10/ssn5/mine</span><br>
+<span>certs             = $dir/certs</span><br>
+<span>crl_dir           = $dir/crl</span><br>
+<span>new_certs_dir     = $dir/newcerts</span><br>
+<span>database          = $dir/index.txt</span><br>
+<span>serial            = $dir/serial</span><br>
+<span>RANDFILE          = $dir/private/.rand</span></p>
+<h1 id="The-root-key-and-root-certificate" data-id="The-root-key-and-root-certificate"><a class="anchor hidden-xs" href="#The-root-key-and-root-certificate" title="The-root-key-and-root-certificate"><span class="octicon octicon-link"></span></a><span>The root key and root certificate.</span></h1>
+<p><span>private_key       = $dir/private/ca.key.pem</span><br>
+<span>certificate       = $dir/certs/ca.cert.pem</span></p>
+<h1 id="For-certificate-revocation-lists" data-id="For-certificate-revocation-lists"><a class="anchor hidden-xs" href="#For-certificate-revocation-lists" title="For-certificate-revocation-lists"><span class="octicon octicon-link"></span></a><span>For certificate revocation lists.</span></h1>
+<p><span>crlnumber         = $dir/crlnumber</span><br>
+<span>crl               = $dir/crl/ca.crl.pem</span><br>
+<span>crl_extensions    = crl_ext</span><br>
+<span>default_crl_days  = 30</span></p>
+<h1 id="SHA-1-is-deprecated-so-use-SHA-2-instead" data-id="SHA-1-is-deprecated-so-use-SHA-2-instead"><a class="anchor hidden-xs" href="#SHA-1-is-deprecated-so-use-SHA-2-instead" title="SHA-1-is-deprecated-so-use-SHA-2-instead"><span class="octicon octicon-link"></span></a><span>SHA-1 is deprecated, so use SHA-2 instead.</span></h1>
+<p><span>default_md        = sha256</span></p>
+<p><span>name_opt          = ca_default</span><br>
+<span>cert_opt          = ca_default</span><br>
+<span>default_days      = 375</span><br>
+<span>preserve          = no</span><br>
+<span>policy            = policy_strict</span></p>
+<p><span>[ policy_strict ]</span></p>
+<h1 id="The-root-CA-should-only-sign-intermediate-certificates-that-match" data-id="The-root-CA-should-only-sign-intermediate-certificates-that-match"><a class="anchor hidden-xs" href="#The-root-CA-should-only-sign-intermediate-certificates-that-match" title="The-root-CA-should-only-sign-intermediate-certificates-that-match"><span class="octicon octicon-link"></span></a><span>The root CA should only sign intermediate certificates that match.</span></h1>
+<h1 id="See-the-POLICY-FORMAT-section-of-man-ca" data-id="See-the-POLICY-FORMAT-section-of-man-ca"><a class="anchor hidden-xs" href="#See-the-POLICY-FORMAT-section-of-man-ca" title="See-the-POLICY-FORMAT-section-of-man-ca"><span class="octicon octicon-link"></span></a><span>See the POLICY FORMAT section of </span><code>man ca</code><span>.</span></h1>
+<p><span>countryName             = match</span><br>
+<span>stateOrProvinceName     = match</span><br>
+<span>organizationName        = match</span><br>
+<span>organizationalUnitName  = optional</span><br>
+<span>commonName              = supplied</span><br>
+<span>emailAddress            = optional</span></p>
+<p><span>[ policy_loose ]</span></p>
+<h1 id="Allow-the-intermediate-CA-to-sign-a-more-diverse-range-of-certificates" data-id="Allow-the-intermediate-CA-to-sign-a-more-diverse-range-of-certificates"><a class="anchor hidden-xs" href="#Allow-the-intermediate-CA-to-sign-a-more-diverse-range-of-certificates" title="Allow-the-intermediate-CA-to-sign-a-more-diverse-range-of-certificates"><span class="octicon octicon-link"></span></a><span>Allow the intermediate CA to sign a more diverse range of certificates.</span></h1>
+<h1 id="See-the-POLICY-FORMAT-section-of-the-ca-man-page" data-id="See-the-POLICY-FORMAT-section-of-the-ca-man-page"><a class="anchor hidden-xs" href="#See-the-POLICY-FORMAT-section-of-the-ca-man-page" title="See-the-POLICY-FORMAT-section-of-the-ca-man-page"><span class="octicon octicon-link"></span></a><span>See the POLICY FORMAT section of the </span><code>ca</code><span> man page.</span></h1>
+<p><span>countryName             = optional</span><br>
+<span>stateOrProvinceName     = optional</span><br>
+<span>localityName            = optional</span><br>
+<span>organizationName        = optional</span><br>
+<span>organizationalUnitName  = optional</span><br>
+<span>commonName              = supplied</span><br>
+<span>emailAddress            = optional</span></p>
+<p><span>[ req ]</span></p>
+<h1 id="Options-for-the-req-tool-man-req" data-id="Options-for-the-req-tool-man-req"><a class="anchor hidden-xs" href="#Options-for-the-req-tool-man-req" title="Options-for-the-req-tool-man-req"><span class="octicon octicon-link"></span></a><span>Options for the </span><code>req</code><span> tool (</span><code>man req</code><span>).</span></h1>
+<p><span>default_bits        = 2048</span><br>
+<span>distinguished_name  = req_distinguished_name</span><br>
+<span>string_mask         = utf8only</span></p>
+<h1 id="SHA-1-is-deprecated-so-use-SHA-2-instead1" data-id="SHA-1-is-deprecated-so-use-SHA-2-instead"><a class="anchor hidden-xs" href="#SHA-1-is-deprecated-so-use-SHA-2-instead1" title="SHA-1-is-deprecated-so-use-SHA-2-instead1"><span class="octicon octicon-link"></span></a><span>SHA-1 is deprecated, so use SHA-2 instead.</span></h1>
+<p><span>default_md          = sha256</span></p>
+<h1 id="Extension-to-add-when-the--x509-option-is-used" data-id="Extension-to-add-when-the--x509-option-is-used"><a class="anchor hidden-xs" href="#Extension-to-add-when-the--x509-option-is-used" title="Extension-to-add-when-the--x509-option-is-used"><span class="octicon octicon-link"></span></a><span>Extension to add when the -x509 option is used.</span></h1>
+<p><span>x509_extensions     = v3_ca</span></p>
+<p><span>[ req_distinguished_name ]</span></p>
+<h1 id="See-httpsenwikipediaorgwikiCertificate_signing_request" data-id="See-httpsenwikipediaorgwikiCertificate_signing_request"><a class="anchor hidden-xs" href="#See-httpsenwikipediaorgwikiCertificate_signing_request" title="See-httpsenwikipediaorgwikiCertificate_signing_request"><span class="octicon octicon-link"></span></a><span>See </span><a href="https://en.wikipedia.org/wiki/Certificate_signing_request" target="_blank" rel="noopener"><span>https://en.wikipedia.org/wiki/Certificate_signing_request</span></a><span>.</span></h1>
+<p><span>countryName                     = Country Name (2 letter code)</span><br>
+<span>stateOrProvinceName             = State or Province Name</span><br>
+<span>localityName                    = Locality Name</span><br>
+<span>0.organizationName              = Organization Name</span><br>
+<span>organizationalUnitName          = Organizational Unit Name</span><br>
+<span>commonName                      = Common Name</span><br>
+<span>emailAddress                    = Email Address</span></p>
+<h1 id="Optionally-specify-some-defaults" data-id="Optionally-specify-some-defaults"><a class="anchor hidden-xs" href="#Optionally-specify-some-defaults" title="Optionally-specify-some-defaults"><span class="octicon octicon-link"></span></a><span>Optionally, specify some defaults.</span></h1>
+<p><span>countryName_default             = RU</span><br>
+<span>stateOrProvinceName_default     = Tatarstan</span><br>
+<span>localityName_default            =</span><br>
+<span>0.organizationName_default      = Innopolis</span><br>
+<span>#organizationalUnitName_default =</span><br>
+<span>#emailAddress_default           =</span></p>
+<p><span>[ v3_ca ]</span></p>
+<h1 id="Extensions-for-a-typical-CA-man-x509v3_config" data-id="Extensions-for-a-typical-CA-man-x509v3_config"><a class="anchor hidden-xs" href="#Extensions-for-a-typical-CA-man-x509v3_config" title="Extensions-for-a-typical-CA-man-x509v3_config"><span class="octicon octicon-link"></span></a><span>Extensions for a typical CA (</span><code>man x509v3_config</code><span>).</span></h1>
+<p><span>subjectKeyIdentifier = hash</span><br>
+<span>authorityKeyIdentifier = keyid:always,issuer</span><br>
+<span>basicConstraints = critical, CA:true</span><br>
+<span>keyUsage = critical, digitalSignature, cRLSign, keyCertSign</span></p>
+<p><span>[ v3_intermediate_ca ]</span></p>
+<h1 id="Extensions-for-a-typical-intermediate-CA-man-x509v3_config" data-id="Extensions-for-a-typical-intermediate-CA-man-x509v3_config"><a class="anchor hidden-xs" href="#Extensions-for-a-typical-intermediate-CA-man-x509v3_config" title="Extensions-for-a-typical-intermediate-CA-man-x509v3_config"><span class="octicon octicon-link"></span></a><span>Extensions for a typical intermediate CA (</span><code>man x509v3_config</code><span>).</span></h1>
+<p><span>subjectKeyIdentifier = hash</span><br>
+<span>authorityKeyIdentifier = keyid:always,issuer</span><br>
+<span>basicConstraints = critical, CA:true, pathlen:0</span><br>
+<span>keyUsage = critical, digitalSignature, cRLSign, keyCertSign</span></p>
+<p><span>[ usr_cert ]</span></p>
+<h1 id="Extensions-for-client-certificates-man-x509v3_config" data-id="Extensions-for-client-certificates-man-x509v3_config"><a class="anchor hidden-xs" href="#Extensions-for-client-certificates-man-x509v3_config" title="Extensions-for-client-certificates-man-x509v3_config"><span class="octicon octicon-link"></span></a><span>Extensions for client certificates (</span><code>man x509v3_config</code><span>).</span></h1>
+<p><span>basicConstraints = CA:FALSE</span><br>
+<span>nsCertType = client, email</span><br>
+<span>nsComment = “OpenSSL Generated Client Certificate”</span><br>
+<span>subjectKeyIdentifier = hash</span><br>
+<span>authorityKeyIdentifier = keyid,issuer</span><br>
+<span>keyUsage = critical, nonRepudiation, digitalSignature, keyEncipherment</span><br>
+<span>extendedKeyUsage = clientAuth, emailProtection</span></p>
+<p><span>[ server_cert ]</span></p>
+<h1 id="Extensions-for-server-certificates-man-x509v3_config" data-id="Extensions-for-server-certificates-man-x509v3_config"><a class="anchor hidden-xs" href="#Extensions-for-server-certificates-man-x509v3_config" title="Extensions-for-server-certificates-man-x509v3_config"><span class="octicon octicon-link"></span></a><span>Extensions for server certificates (</span><code>man x509v3_config</code><span>).</span></h1>
+<p><span>basicConstraints = CA:FALSE</span><br>
+<span>nsCertType = server</span><br>
+<span>nsComment = “OpenSSL Generated Server Certificate”</span><br>
+<span>subjectKeyIdentifier = hash</span><br>
+<span>authorityKeyIdentifier = keyid,issuer:always</span><br>
+<span>keyUsage = critical, digitalSignature, keyEncipherment</span><br>
+<span>extendedKeyUsage = serverAuth</span></p>
+<p><span>[ crl_ext ]</span></p>
+<h1 id="Extension-for-CRLs-man-x509v3_config" data-id="Extension-for-CRLs-man-x509v3_config"><a class="anchor hidden-xs" href="#Extension-for-CRLs-man-x509v3_config" title="Extension-for-CRLs-man-x509v3_config"><span class="octicon octicon-link"></span></a><span>Extension for CRLs (</span><code>man x509v3_config</code><span>).</span></h1>
+<p><span>authorityKeyIdentifier=keyid:always</span></p>
+<p><span>[ ocsp ]</span></p>
+<h1 id="Extension-for-OCSP-signing-certificates-man-ocsp" data-id="Extension-for-OCSP-signing-certificates-man-ocsp"><a class="anchor hidden-xs" href="#Extension-for-OCSP-signing-certificates-man-ocsp" title="Extension-for-OCSP-signing-certificates-man-ocsp"><span class="octicon octicon-link"></span></a><span>Extension for OCSP signing certificates (</span><code>man ocsp</code><span>).</span></h1>
+<p><span>basicConstraints = CA:FALSE</span><br>
+<span>subjectKeyIdentifier = hash</span><br>
+<span>authorityKeyIdentifier = keyid,issuer</span><br>
+<span>keyUsage = critical, digitalSignature</span><br>
+<span>extendedKeyUsage = critical, OCSPSigning</span></p>
+</details><p><span>Most of those instructions are directory specification, time limits, cryptography type, format (country, name, email), policies setup, and some lines about dealing with client or servers certificates. In the end, there is the </span><code>OCSP</code><span> configuration part. It is an internet protocol used to obtain the revocation status of an X.509 digital certificate</span></p><p><span>Generate root key</span></p><pre><code>openssl genrsa -aes256 -out private/ca.key.pem 4096
+</code></pre><p><span>Create root certificate, with parameters such as cryptographic algorithm, expiration day and etc</span></p><pre><code>openssl req -config openssl.cnf -key private/ca.key.pem -new -x509 -days 7300 -sha256 -extensions v3_ca -out certs/ca.cert.pem
+
+</code></pre><p><span>Verify root cert</span></p><pre><code>openssl x509 -noout -text -in certs/ca.cert.pem
+</code></pre><p><span>After verification we are getting output that are shown on the picture below</span></p><p><img src="https://i.imgur.com/HuPSZgU.png" alt="" loading="lazy"></p><p><span>After this point we are ready to do next step - intermediate certificate:</span><br>
+<span>Several feist steps are similar to the previous step</span><br>
+<span>so I will not show them:</span><br>
+<span>Folder creation</span><br>
+<span>Index file creation</span><br>
+<span>Serial file creation</span><br>
+<span>And </span><code>opessl.conf</code><span> file creation</span><br>
+<span>In their last one however we need to make some changes, lines, that are hidden, below contain changes, that have to be done in the new file dedicated to the </span><code>intermediate</code><span> certificate</span></p><details>
+<p><span>[ CA_default ]</span><br>
+<span>dir             = /home/st10/ssn5/mine/intermediate</span><br>
+<span>private_key     = $dir/private/intermediate.key.pem</span><br>
+<span>certificate     = $dir/certs/intermediate.cert.pem</span><br>
+<span>crl             = $dir/crl/intermediate.crl.pem</span><br>
+<span>policy          = policy_loose</span></p>
+</details><p><span>Create file that contains certificate revocation list</span></p><pre><code>echo 1000 &gt; /root/ca/intermediate/crlnumber
+</code></pre><p><span>Key creation</span></p><pre><code>openssl genrsa -aes256 -out intermediate/private/intermediate.key.pem 4096
+</code></pre><p><span>Certificate creation</span></p><pre><code>openssl req -config intermediate/openssl.cnf -new -sha256 -key intermediate/private/intermediate.key.pem -out intermediate/csr/intermediate.csr.pem
+</code></pre><p><span>Signing command</span></p><pre><code>openssl ca -config openssl.cnf -extensions v3_intermediate_ca -days 3650 -notext -md sha256 -in intermediate/csr/intermediate.csr.pem -out intermediate/certs/intermediate.cert.pem
+</code></pre><p><span>Verification</span></p><pre><code>openssl x509 -noout -text -in intermediate/certs/intermediate.cert.pem
+</code></pre><p><img src="https://i.imgur.com/Ts5C1wC.png" alt="" loading="lazy"></p><p><span>We also can verify it against root</span></p><pre><code>openssl verify -CAfile certs/ca.cert.pem \
+      intermediate/certs/intermediate.cert.pem
+</code></pre><p><img src="https://i.imgur.com/iSJ8sGU.png" alt="" loading="lazy"></p><p><span>Now we can start our last step, to create a server certificate</span></p><p><span>Key creation</span></p><pre><code>openssl genrsa -aes256 \-out intermediate/private/www.facebook.com.key.pem 2048
+</code></pre><p><span>Certificate creation</span></p><pre><code>openssl req -config intermediate/openssl.cnf -key intermediate/private/www.facebook.com.key.pem -new -sha256 -out intermediate/csr/www.facebook.com.csr.pem
+</code></pre><p><span>Certificate signing</span></p><pre><code>openssl ca -config intermediate/openssl.cnf -extensions server_cert -days 375 -notext -md sha256 -in intermediate/csr/www.facebook.com.csr.pem -out intermediate/certs/www.facebook.com.cert.pem
+</code></pre><p><span>Certificate verification</span></p><pre><code>openssl x509 -noout -text -in intermediate/certs/www.facebook.com.cert.pem
+</code></pre><p><img src="https://i.imgur.com/fS4A87v.png" alt="" loading="lazy"></p><p><span>Chain of trust verification</span></p><pre><code>openssl verify -CAfile intermediate/certs/ca-chain.cert.pem intermediate/certs/www.facebook.com.cert.pem
+</code></pre><p><img src="https://i.imgur.com/0GFCKCm.png" alt="" loading="lazy"></p><p><span>Then we have to may to perform commands that is shown below in order to form a file with every certificate in the chain of trust</span></p><pre><code>sudo cat intermediate/certs/intermediate.cert.pem certs/ca.cert.pem &gt; intermediate/certs/ca-chain.cert.pem
+sudo cat intermediate/certs/ca-chain.cert.pem intermediate/certs/www.facebook.com.cert.pem &gt; intermediate/certs/full-chain.cert.pem
+sudo cat intermediate/certs/www.facebook.com.cert.pem intermediate/certs/ca-chain.cert.pem &gt; intermediate/certs/full-chain.cert.pem
+</code></pre><p><span>After all is set and done we can see file with all certificates in one file</span></p><center>
+<p><img src="https://i.imgur.com/uNQfmrB.png" alt="" loading="lazy"></p>
+</center><p><a href="https://jamielinux.com/docs/openssl-certificate-authority/introduction.html" target="_blank" rel="noopener"></a></p><p><strong><span>b. Include created certificate chain into the report as appendix - both in base64 and human readable form.</span></strong></p><p><span>In human readable</span></p><details>
+<p><span>Certificate:</span><br>
+<span>Data:</span><br>
+<span>Version: 3 (0x2)</span><br>
+<span>Serial Number: 4096 (0x1000)</span><br>
+<span>Signature Algorithm: sha256WithRSAEncryption</span><br>
+<span>Issuer: C = RU, ST = Tatarstan, O = Innopolis, OU = Ilya Ltd Certificate Authority, CN = Ilya Ltd Intermediate CA, emailAddress = r.ilia@innopolis.university</span><br>
+<span>Validity</span><br>
+<span>Not Before: Nov 13 15:14:53 2021 GMT</span><br>
+<span>Not After : Nov 23 15:14:53 2022 GMT</span><br>
+<span>Subject: C = RU, ST = Tatarstan, O = Innopolis, CN = </span><a href="http://www.facebook.com" target="_blank" rel="noopener"><span>www.facebook.com</span></a><br>
+<span>Subject Public Key Info:</span><br>
+<span>Public Key Algorithm: rsaEncryption</span><br>
+<span>RSA Public-Key: (2048 bit)</span><br>
+<span>Modulus:</span><br>
+<span>00:c5:bc:48:f5:f2:38:c0:e7:8f:5a:7d</span><img class="emoji" alt=":de:" src="https://cdn.jsdelivr.net/npm/@hackmd/emojify.js@2.1.0/dist/images/basic/de.png"><span>35:03:</span><br>
+<span>50:4a:1b:98:3a:11:8f:77:56:32:a1:60:4f:af:63:</span><br>
+<span>2f:19:1d:ff:a3:99:c1:49:a3:70:16:81:bc:08:fd:</span><br>
+<span>4c:88:3c:65</span><img class="emoji" alt=":cd:" src="https://cdn.jsdelivr.net/npm/@hackmd/emojify.js@2.1.0/dist/images/basic/cd.png"><span>fd:26:96:3e:3e:7e:81:b2:7a:ec:</span><br>
+<span>1f:66:75:38:56:66:e3:0b:31:39:ca:d0:c2:80:ff:</span><br>
+<span>48</span><img class="emoji" alt=":ab:" src="https://cdn.jsdelivr.net/npm/@hackmd/emojify.js@2.1.0/dist/images/basic/ab.png"><span>0f:9e:b6:dc</span><img class="emoji" alt=":cd:" src="https://cdn.jsdelivr.net/npm/@hackmd/emojify.js@2.1.0/dist/images/basic/cd.png"><span>ff:44:12:95:96:f5:d3:84:</span><br>
+<span>d5:84:14:e0:be:76</span><img class="emoji" alt=":ab:" src="https://cdn.jsdelivr.net/npm/@hackmd/emojify.js@2.1.0/dist/images/basic/ab.png"><span>12:9e:39:d8:2a:39:4d:6a:</span><br>
+<span>9b:6d:ce:f6:37:18:ec:39:71:ca:0e:ad:9b:99:0d:</span><br>
+<span>79:40:83:c4:6c:3b:17:51:13:ff:fd:ae:51:e3:04:</span><br>
+<span>cb:71:a7:95:68:a8:31:8b:42:4e:15:f7:6f:fc:a9:</span><br>
+<span>27:6c:7e:a2:8d:68:b3:7d:7a:6b:26:2f:3f:d5:27:</span><br>
+<span>79:6a:c9:ad:21:16:74:44:86:5e:a5:46:ca:f9:a7:</span><br>
+<span>a4:a5:4d:68:56:6e:1c:1b:f7:2e:07:ee:8e:40:87:</span><br>
+<span>7a:e4:be:d6:7a:c2:d3:e1:d5:bc:e5:fc:23:82:10:</span><br>
+<span>ba:a4:53:7d:36:66:f1</span><img class="emoji" alt=":de:" src="https://cdn.jsdelivr.net/npm/@hackmd/emojify.js@2.1.0/dist/images/basic/de.png"><span>5d:d1:62:85:15:24:08:</span><br>
+<span>4f:ec:2f:23:aa:43:8e:f3:6a:0c:91:9c</span><img class="emoji" alt=":cd:" src="https://cdn.jsdelivr.net/npm/@hackmd/emojify.js@2.1.0/dist/images/basic/cd.png"><span>79:f6:</span><br>
+<span>90:85:6f:3e:89:ac:98:ff:03:05:e3:7a:99:80:22:</span><br>
+<span>d1:79</span><br>
+<span>Exponent: 65537 (0x10001)</span><br>
+<span>X509v3 extensions:</span><br>
+<span>X509v3 Basic Constraints:</span><br>
+<span>CA:FALSE</span><br>
+<span>Netscape Cert Type:</span><br>
+<span>SSL Server</span><br>
+<span>Netscape Comment:</span><br>
+<span>OpenSSL Generated Server Certificate</span><br>
+<span>X509v3 Subject Key Identifier:</span><br>
+<span>37:8F:DA:5B:C8:3D:AA:99:85:66:54:42:2A:94:F2:B4:BD:24:68:29</span><br>
+<span>X509v3 Authority Key Identifier:</span><br>
+<span>keyid:A5:84:B4:B8:1A:2C:A2:7F:D4:CB:38:3C:F1:D5:87:A0:7A:4F:0A:D4</span><br>
+<span>DirName:/C=RU/ST=Tatarstan/O=Innopolis/OU=Ilya Ltd Certificate Authority/CN=Ilya Ltd Root CA/emailAddress=r.ilia@innopolis.university</span><br>
+<span>serial:10:00</span></p>
+<pre><code>        X509v3 Key Usage: critical
+            Digital Signature, Key Encipherment
+        X509v3 Extended Key Usage: 
+            TLS Web Server Authentication
+Signature Algorithm: sha256WithRSAEncryption
+     99:bd:bb:4d:fa:90:c2:b6:c1:4e:36:22:f9:81:d1:ed:da:cb:
+     8f:af:ce:ac:35:0d:a1:86:68:84:8e:d6:e2:cb:1a:8a:e5:bb:
+     66:17:9b:c8:21:96:64:96:26:d1:5d:f2:e9:d0:46:aa:1f:aa:
+     86:0c:71:2d:a7:b9:02:92:7c:0b:62:ce:01:10:41:2f:32:4f:
+     e0:71:40:82:d0:8b:08:bf:8e:39:b9:3b:aa:6e:79:8f:7d:16:
+     fc:d0:54:c5:43:26:d0:c7:bf:85:13:a6:fa:e4:d3:75:5d:2f:
+     11:d0:e0:24:91:59:a4:7e:80:8b:94:28:99:37:8f:30:70:5a:
+     8c:f6:d5:0e:24:07:db:ef:e5:0b:18:11:aa:8b:c0:cb:1a:23:
+     e4:29:72:0c:fb:9d:73:5f:2e:af:74:33:65:16:a6:f5:40:03:
+     62:a9:32:c3:b5:01:84:34:9d:b1:27:fa:fb:51:b6:3b:8e:ad:
+     1c:1b:b0:7f:ca:32:5b:69:f6:bf:fb:68:88:8b:9d:fc:e6:16:
+     37:48:77:67:6e:58:ec:37:d0:f2:17:73:f7:55:ca:2d:c2:a5:
+     79:f1:fa:0c:4b:91:c1:cd:4b:fd:24:88:ac:5a:41:c3:6c:b5:
+     e1:60:cd:c5:5f:06:96:cb:17:a4:f3:69:ea:e5:d0:78:4a:81:
+     8b:7e:a7:ad:7e:23:f8:3e:7f:29:39:3f:6a:dc:6a:b9:33:a2:
+     37:dc:da:cd:10:6d:fc:cf:5a:2b:05:3f:37:5f:0e:a4:c3:be:
+     13:ba:ab:a8:61:c9:1d:69:a7:f2:8f:2b:5e:37:24:bc:b2:64:
+     72:91:ae:81:a7:c8:9b:58:93:f4:09:f2:53:1a:0f:10:65:ac:
+     e6:93:2b:06:7e:de:b7:a6:3d:c1:86:a5:a4:24:44:9f:2c:05:
+     57:59:21:bc:33:b4:a9:20:b7:71:1c:fe:4d:c5:f2:65:96:d2:
+     7d:d0:2e:37:77:aa:f4:5f:04:6e:65:82:40:48:2a:83:c1:e9:
+     0c:b0:82:e2:62:5f:68:bd:ae:46:e0:1a:ba:96:c6:01:3d:41:
+     50:a1:44:a5:e9:04:1d:d6:47:68:ec:90:9b:81:bf:fe:1b:33:
+     ca:3d:6d:ff:66:3f:6f:1e:77:ab:c8:ff:29:2a:63:a8:78:a0:
+     50:bf:9a:7d:e8:88:a8:e0:25:ec:31:89:64:9f:34:17:5c:87:
+     3f:ca:bf:62:00:96:c2:1e:83:a4:ae:0a:82:b7:be:0b:f7:63:
+     b6:e9:96:8a:af:a7:e1:aa:50:5b:af:a6:b5:06:ea:7d:7d:75:
+     1e:1d:dd:e4:6f:20:b6:91:57:ee:49:02:11:6f:f5:49:48:16:
+     59:3c:6f:03:ce:5b:a3:71
+</code></pre>
+<p><span>-----BEGIN CERTIFICATE-----</span><br>
+<span>MIIF7TCCA9WgAwIBAgICEAAwDQYJKoZIhvcNAQELBQAwga0xCzAJBgNVBAYTAlJV</span><br>
+<span>MRIwEAYDVQQIDAlUYXRhcnN0YW4xEjAQBgNVBAoMCUlubm9wb2xpczEnMCUGA1UE</span><br>
+<span>CwweSWx5YSBMdGQgQ2VydGlmaWNhdGUgQXV0aG9yaXR5MSEwHwYDVQQDDBhJbHlh</span><br>
+<span>IEx0ZCBJbnRlcm1lZGlhdGUgQ0ExKjAoBgkqhkiG9w0BCQEWG3IuaWxpYUBpbm5v</span><br>
+<span>cG9saXMudW5pdmVyc2l0eTAeFw0yMTExMTMxNTE0NTNaFw0yMjExMjMxNTE0NTNa</span><br>
+<span>MFAxCzAJBgNVBAYTAlJVMRIwEAYDVQQIDAlUYXRhcnN0YW4xEjAQBgNVBAoMCUlu</span><br>
+<span>bm9wb2xpczEZMBcGA1UEAwwQd3d3LmZhY2Vib29rLmNvbTCCASIwDQYJKoZIhvcN</span><br>
+<span>AQEBBQADggEPADCCAQoCggEBAMW8SPXyOMDnj1p93jUDUEobmDoRj3dWMqFgT69j</span><br>
+<span>Lxkd/6OZwUmjcBaBvAj9TIg8Zc39JpY+Pn6BsnrsH2Z1OFZm4wsxOcrQwoD/SKsP</span><br>
+<span>nrbczf9EEpWW9dOE1YQU4L52qxKeOdgqOU1qm23O9jcY7Dlxyg6tm5kNeUCDxGw7</span><br>
+<span>F1ET//2uUeMEy3GnlWioMYtCThX3b/ypJ2x+oo1os316ayYvP9UneWrJrSEWdESG</span><br>
+<span>XqVGyvmnpKVNaFZuHBv3LgfujkCHeuS+1nrC0+HVvOX8I4IQuqRTfTZm8d5d0WKF</span><br>
+<span>FSQIT+wvI6pDjvNqDJGczXn2kIVvPomsmP8DBeN6mYAi0XkCAwEAAaOCAXEwggFt</span><br>
+<span>MAkGA1UdEwQCMAAwEQYJYIZIAYb4QgEBBAQDAgZAMDMGCWCGSAGG+EIBDQQmFiRP</span><br>
+<span>cGVuU1NMIEdlbmVyYXRlZCBTZXJ2ZXIgQ2VydGlmaWNhdGUwHQYDVR0OBBYEFDeP</span><br>
+<span>2lvIPaqZhWZUQiqU8rS9JGgpMIHTBgNVHSMEgcswgciAFKWEtLgaLKJ/1Ms4PPHV</span><br>
+<span>h6B6TwrUoYGrpIGoMIGlMQswCQYDVQQGEwJSVTESMBAGA1UECAwJVGF0YXJzdGFu</span><br>
+<span>MRIwEAYDVQQKDAlJbm5vcG9saXMxJzAlBgNVBAsMHklseWEgTHRkIENlcnRpZmlj</span><br>
+<span>YXRlIEF1dGhvcml0eTEZMBcGA1UEAwwQSWx5YSBMdGQgUm9vdCBDQTEqMCgGCSqG</span><br>
+<span>SIb3DQEJARYbci5pbGlhQGlubm9wb2xpcy51bml2ZXJzaXR5ggIQADAOBgNVHQ8B</span><br>
+<span>Af8EBAMCBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDQYJKoZIhvcNAQELBQADggIB</span><br>
+<span>AJm9u036kMK2wU42IvmB0e3ay4+vzqw1DaGGaISO1uLLGorlu2YXm8ghlmSWJtFd</span><br>
+<span>8unQRqofqoYMcS2nuQKSfAtizgEQQS8yT+BxQILQiwi/jjm5O6pueY99FvzQVMVD</span><br>
+<span>JtDHv4UTpvrk03VdLxHQ4CSRWaR+gIuUKJk3jzBwWoz21Q4kB9vv5QsYEaqLwMsa</span><br>
+<span>I+Qpcgz7nXNfLq90M2UWpvVAA2KpMsO1AYQ0nbEn+vtRtjuOrRwbsH/KMltp9r/7</span><br>
+<span>aIiLnfzmFjdId2duWOw30PIXc/dVyi3CpXnx+gxLkcHNS/0kiKxaQcNsteFgzcVf</span><br>
+<span>BpbLF6Tzaerl0HhKgYt+p61+I/g+fyk5P2rcarkzojfc2s0QbfzPWisFPzdfDqTD</span><br>
+<span>vhO6q6hhyR1pp/KPK143JLyyZHKRroGnyJtYk/QJ8lMaDxBlrOaTKwZ+3remPcGG</span><br>
+<span>paQkRJ8sBVdZIbwztKkgt3Ec/k3F8mWW0n3QLjd3qvRfBG5lgkBIKoPB6QywguJi</span><br>
+<span>X2i9rkbgGrqWxgE9QVChRKXpBB3WR2jskJuBv/4bM8o9bf9mP28ed6vI/ykqY6h4</span><br>
+<span>oFC/mn3oiKjgJewxiWSfNBdchz/Kv2IAlsIeg6SuCoK3vgv3Y7bploqvp+GqUFuv</span><br>
+<span>prUG6n19dR4d3eRvILaRV+5JAhFv9UlIFlk8bwPOW6Nx</span><br>
+<span>-----END CERTIFICATE-----</span></p>
+</details><p><span>base 64</span></p><details>
+<p><span>-----BEGIN CERTIFICATE-----</span><br>
+<span>MIIF7TCCA9WgAwIBAgICEAAwDQYJKoZIhvcNAQELBQAwga0xCzAJBgNVBAYTAlJV</span><br>
+<span>MRIwEAYDVQQIDAlUYXRhcnN0YW4xEjAQBgNVBAoMCUlubm9wb2xpczEnMCUGA1UE</span><br>
+<span>CwweSWx5YSBMdGQgQ2VydGlmaWNhdGUgQXV0aG9yaXR5MSEwHwYDVQQDDBhJbHlh</span><br>
+<span>IEx0ZCBJbnRlcm1lZGlhdGUgQ0ExKjAoBgkqhkiG9w0BCQEWG3IuaWxpYUBpbm5v</span><br>
+<span>cG9saXMudW5pdmVyc2l0eTAeFw0yMTExMTMxNTE0NTNaFw0yMjExMjMxNTE0NTNa</span><br>
+<span>MFAxCzAJBgNVBAYTAlJVMRIwEAYDVQQIDAlUYXRhcnN0YW4xEjAQBgNVBAoMCUlu</span><br>
+<span>bm9wb2xpczEZMBcGA1UEAwwQd3d3LmZhY2Vib29rLmNvbTCCASIwDQYJKoZIhvcN</span><br>
+<span>AQEBBQADggEPADCCAQoCggEBAMW8SPXyOMDnj1p93jUDUEobmDoRj3dWMqFgT69j</span><br>
+<span>Lxkd/6OZwUmjcBaBvAj9TIg8Zc39JpY+Pn6BsnrsH2Z1OFZm4wsxOcrQwoD/SKsP</span><br>
+<span>nrbczf9EEpWW9dOE1YQU4L52qxKeOdgqOU1qm23O9jcY7Dlxyg6tm5kNeUCDxGw7</span><br>
+<span>F1ET//2uUeMEy3GnlWioMYtCThX3b/ypJ2x+oo1os316ayYvP9UneWrJrSEWdESG</span><br>
+<span>XqVGyvmnpKVNaFZuHBv3LgfujkCHeuS+1nrC0+HVvOX8I4IQuqRTfTZm8d5d0WKF</span><br>
+<span>FSQIT+wvI6pDjvNqDJGczXn2kIVvPomsmP8DBeN6mYAi0XkCAwEAAaOCAXEwggFt</span><br>
+<span>MAkGA1UdEwQCMAAwEQYJYIZIAYb4QgEBBAQDAgZAMDMGCWCGSAGG+EIBDQQmFiRP</span><br>
+<span>cGVuU1NMIEdlbmVyYXRlZCBTZXJ2ZXIgQ2VydGlmaWNhdGUwHQYDVR0OBBYEFDeP</span><br>
+<span>2lvIPaqZhWZUQiqU8rS9JGgpMIHTBgNVHSMEgcswgciAFKWEtLgaLKJ/1Ms4PPHV</span><br>
+<span>h6B6TwrUoYGrpIGoMIGlMQswCQYDVQQGEwJSVTESMBAGA1UECAwJVGF0YXJzdGFu</span><br>
+<span>MRIwEAYDVQQKDAlJbm5vcG9saXMxJzAlBgNVBAsMHklseWEgTHRkIENlcnRpZmlj</span><br>
+<span>YXRlIEF1dGhvcml0eTEZMBcGA1UEAwwQSWx5YSBMdGQgUm9vdCBDQTEqMCgGCSqG</span><br>
+<span>SIb3DQEJARYbci5pbGlhQGlubm9wb2xpcy51bml2ZXJzaXR5ggIQADAOBgNVHQ8B</span><br>
+<span>Af8EBAMCBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDQYJKoZIhvcNAQELBQADggIB</span><br>
+<span>AJm9u036kMK2wU42IvmB0e3ay4+vzqw1DaGGaISO1uLLGorlu2YXm8ghlmSWJtFd</span><br>
+<span>8unQRqofqoYMcS2nuQKSfAtizgEQQS8yT+BxQILQiwi/jjm5O6pueY99FvzQVMVD</span><br>
+<span>JtDHv4UTpvrk03VdLxHQ4CSRWaR+gIuUKJk3jzBwWoz21Q4kB9vv5QsYEaqLwMsa</span><br>
+<span>I+Qpcgz7nXNfLq90M2UWpvVAA2KpMsO1AYQ0nbEn+vtRtjuOrRwbsH/KMltp9r/7</span><br>
+<span>aIiLnfzmFjdId2duWOw30PIXc/dVyi3CpXnx+gxLkcHNS/0kiKxaQcNsteFgzcVf</span><br>
+<span>BpbLF6Tzaerl0HhKgYt+p61+I/g+fyk5P2rcarkzojfc2s0QbfzPWisFPzdfDqTD</span><br>
+<span>vhO6q6hhyR1pp/KPK143JLyyZHKRroGnyJtYk/QJ8lMaDxBlrOaTKwZ+3remPcGG</span><br>
+<span>paQkRJ8sBVdZIbwztKkgt3Ec/k3F8mWW0n3QLjd3qvRfBG5lgkBIKoPB6QywguJi</span><br>
+<span>X2i9rkbgGrqWxgE9QVChRKXpBB3WR2jskJuBv/4bM8o9bf9mP28ed6vI/ykqY6h4</span><br>
+<span>oFC/mn3oiKjgJewxiWSfNBdchz/Kv2IAlsIeg6SuCoK3vgv3Y7bploqvp+GqUFuv</span><br>
+<span>prUG6n19dR4d3eRvILaRV+5JAhFv9UlIFlk8bwPOW6Nx</span><br>
+<span>-----END CERTIFICATE-----</span></p>
+</details><div class="alert alert-info">
+<ol start="3">
+<li><strong><span>BONUS</span></strong><span>: Provide a server key and certificate to mitmproxy and try to visit </span><a href="http://www.facebook.com" target="_blank" rel="noopener"><span>www.facebook.com</span></a><span> using the browser and check how the certificate chain is looking now (do not forget to add the created root CA certificate to the trusted store).</span></li>
+</ol>
+</div><p><span>Now we can use our created certificate as mimicked facebook’s certificate, in my case it is not mimicked, but it is wery representative in the way to show that using proxy and own created chain of trust someone can create very alike looking web site</span><br>
+<span>To this end i start mitmproxy with the certificate specified:</span></p><pre><code>mitmproxy --certs *=/home/st10/ssn5/jamielinux/intermediate/certs/fb_chain_new.cert.pem --mode transparent --showhost
+</code></pre><p><span>And now, every Host that is using proxy are getting the ‘wrong’ certificate, like in the picture below</span></p><p><img src="https://i.imgur.com/YeAE6y9.png" alt="" loading="lazy"></p><p><span>In the normal way, we should got output that is shown in the picture below</span></p><p><img src="https://i.imgur.com/wACgiB1.png" alt="" loading="lazy"></p><p><span>That method is used then hackers want to mislead users  with fake security</span></p><details>
+<p><span>:console.view.eventlog</span></p>
+<pre><code>reloadable sysctl -w net.ipv4.ip_forward=1
+reloadable sysctl -w net.ipv6.conf.all.forwarding=1
+reloadable sysctl -w net.ipv4.conf.all.send_redirects=0
+
+reloadable iptables -t nat -A PREROUTING -i virbr0 -p tcp --dport 80 -j REDIRECT --to-port 8080
+reloadable iptables -t nat -A PREROUTING -i virbr0 -p tcp --dport 443 -j REDIRECT --to-port 8080
+
+sudo iptables -t nat -v -L PREROUTING -n --line-number
+sudo iptables -t nat -D PREROUTING (number)
+
+sudo mkdir /usr/share/ca-certificates/extra
+openssl x509 -outform der -in your-cert.pem -out your-cert.crt
+sudo cp mitmproxy.crt /usr/share/ca-certificates/extra/mitmporxy.crt
+</code></pre>
+</details></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li class="invisable-node"><ul class="nav">
+<li class=""><a href="#Task-1-TLS-handshake" title="Task 1: TLS handshake">Task 1: TLS handshake</a></li>
+<li class=""><a href="#Task-2-Man-In-The-Middle" title="Task 2: Man In The Middle">Task 2: Man In The Middle</a></li>
+<li class=""><a href="#Task-3---x509" title="Task 3 - x509">Task 3 - x509</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;" null null>
+        <div class="toc"><ul class="nav">
+<li class="invisable-node"><ul class="nav">
+<li class=""><a href="#Task-1-TLS-handshake" title="Task 1: TLS handshake">Task 1: TLS handshake</a></li>
+<li class=""><a href="#Task-2-Man-In-The-Middle" title="Task 2: Man In The Middle">Task 2: Man In The Middle</a></li>
+<li class=""><a href="#Task-3---x509" title="Task 3 - x509">Task 3 - x509</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
