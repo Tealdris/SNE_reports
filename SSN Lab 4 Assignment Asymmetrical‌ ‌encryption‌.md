@@ -250,10 +250,10 @@ rsakey.py programm
 After entering my numbers, that was calculated in previous task, I can get `RSA PRIVATE KEY` and `PUBLIC KEY` as result, you can find them below
 
 ```
-b'-----BEGIN RSA PRIVATE KEY-----\nMIICXQIBAAKBgQDenhCkOAFurSPnU+NIgRPBAMv+TBsOMckI0ltftmNDi9bJYZmt\nbLGaFHKiFD09FttvIn7IZrOxSHzODmAiTM/RzxY3n+NS5lgtJkcilyNKMZsmpiGP\ngKn7e32Gojh2NV12/I9JvgUyAvmcNfY9Y7DnqZOT7yAJW4coC3eTq8X+vQIDAQAB\nAoGBAIbKC+dypaNeoAuTpl0jElPc6Kbba9JHYKK/w2WLaETgqbcbKlJwKoTRdqse\nOAoCCfEbYMp0LL7d1ftphtmdyoHskXC5lN1arYDyVrnRQ81GgASjz7LTMvVOapFL\nVw+2FT/PSoKFV1lHRdXhuAWGM48xsSr5C2XgIRZ5G8HoJmqdAkEA6tWYpubhsIe9\nz1hEhVGpA2ycARyWDCWz5F2cHp5dh9Ly+eod6z0OwhUxEAXRy/qM+ZlHSP9RWyU9\nqcu5eAyUmwJBAPKulYVl6tryScEjkyYjDmu9WZhnl/lxnMKM2cXtUDYHOQ9zAyrT\nWKk5cPNwFHvUIAkgw97QdpY7BbcOBHxGc4cCQQCZvgFUs69qPVQ9HRKvHclDHqX7\n7FUn2r8tcUO2oAOn2qmMiIPR8IVq9yjJzqWNn5kQCBOtbMo8m+ME+QWR3NqlAkAg\nBBRJwwZW2DwOtOjG0T0nzZUyXAhaqjhqGjbou8QnPJC0jxHN5o/900wpcZHiPDv1\nuFLe5FWgwCyi18CTvJ+lAkBehsji8J3loAKi5HaiESssKtLpN22HWIJkHCkSzdru\nuioDEIKSIqi+rOhOtgnN8jYIftKzBJP2xFLD44SS3K5H\n-----END RSA PRIVATE KEY-----'
+b'-----BEGIN RSA PRIVATE KEY-----\n\n-----END RSA PRIVATE KEY-----'
 ```
 ```
-b'-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDenhCkOAFurSPnU+NIgRPBAMv+\nTBsOMckI0ltftmNDi9bJYZmtbLGaFHKiFD09FttvIn7IZrOxSHzODmAiTM/RzxY3\nn+NS5lgtJkcilyNKMZsmpiGPgKn7e32Gojh2NV12/I9JvgUyAvmcNfY9Y7DnqZOT\n7yAJW4coC3eTq8X+vQIDAQAB\n-----END PUBLIC KEY-----'
+b'-----BEGIN PUBLIC KEY-----\n\n-----END PUBLIC KEY-----'
 ```
 
 

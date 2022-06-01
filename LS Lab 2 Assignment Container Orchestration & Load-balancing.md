@@ -63,19 +63,6 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 sudo docker-compose --version
 ```
-:::spoiler
-
-some of  the application requires `npm`
-
-```bash=
-sudo apt install build-essential checkinstall -y
-sudo apt install libssl-dev -y
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
-sudo reboot
-nvm install 16.13.2
-```
-
-:::
 
 **Bonus**: if you choose Docker, play with alternate storage drivers e.g. BTRFS or ZFS instead of OverlayFS.
 
@@ -149,7 +136,7 @@ After implementing those `swarm` is initialized
 Those tokens can be used on the worker node if we want to include it to the `swarm`
 
 ```bash=
-docker swarm join --token SWMTKN-1-4po2fh8wnz0tskgmayzoc2eemhsxn067av6uxeio4tlvv6d5ct-8mw2q9tpyt1kwr3jglvlgxypc 10.1.1.37:2377
+docker swarm join --token Sc 10.1.1.37:2377
 ```
 
 You can see success message on the worker station on the picture below
@@ -455,74 +442,4 @@ For example you can see `cAdvisor` web page in the picture below. Plugin allow t
 ![](https://i.imgur.com/jEMkYPI.png)
 
 </center>
-
-:::spoiler
-
-network:10.1.1.16/24
-    version: 2
-    ethernets:
-        ens3:
-            dhcp4: no
-            addresses: [192.168.122.100/24]
-            gateway4: 192.168.122.1
-            nameservers:
-                addresses: [8.8.8.8]
-                
-sudo docker service create --name=vizualization --publish=8080:8080/tcp --constraint=node.role==manager --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock dockersamples/visualizer
-
-docker service update --force --restart-condition reboot web-server
- 
-https://phoenixnap.com/kb/install-docker-compose-on-ubuntu-20-04
- 
- 
-docker stack deploy -c 
-
-sudo brctl addbr br0
-sudo ip l s dev br0 up
-sudo tunctl -t tap0 -u st10
-sudo ip l s dev tap0 up
-sudo brctl addif br0 tap0
-sudo brctl addif br0 eno1
-sudo ifconfig eno1 0.0.0.0
-sudo ip a a 10.1.1.67 dev br0
-
-docker deploy --compose-file docker-compose.yml
-
-VEGETA_VERSION=$(curl -s "https://api.github.com/repos/tsenart/vegeta/releases/latest" | grep -Po '"tag_name": "v\K[0-9.]+')
-curl -Lo vegeta.tar.gz "https://github.com/tsenart/vegeta/releases/latest/download/vegeta_${VEGETA_VERSION}_linux_amd64.tar.gz"
-mkdir vegeta-temp
-tar xf vegeta.tar.gz -C vegeta-temp
-sudo mv vegeta-temp/vegeta /usr/local/bin
-rm -rf vegeta.tar.gz
-rm -rf vegeta-temp
-
-
-echo "GET http://10.1.1.92:8090" | vegeta attack -duration=10s | tee results.bin | vegeta report
-
-tar czf compress
-tar xvf extract
-
-WORDPRESS PASS
-yDArZQRdUB8r5hU
-docker-compose down --volumes
-
-cAdvisor
-VERSION=v0.36.0 # use the latest release version from https://github.com/google/cadvisor/releases
-sudo docker run \
-  --volume=/:/rootfs:ro \
-  --volume=/var/run:/var/run:ro \
-  --volume=/sys:/sys:ro \
-  --volume=/var/lib/docker/:/var/lib/docker:ro \
-  --volume=/dev/disk/:/dev/disk:ro \
-  --publish=8080:8080 \
-  --detach=true \
-  --name=cadvisor \
-  --privileged \
-  --device=/dev/kmsg \
-  gcr.io/cadvisor/cadvisor:$VERSION
-  
-  
-  https://github.com/jcwimer/docker-swarm-autoscaler
-:::
-
 
